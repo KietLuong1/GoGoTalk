@@ -2,7 +2,8 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Text, View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 
-import { colors } from '../config/constants';
+import { colors as constantColors } from '@config/constants';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface ContactRowProps {
   name: string;
@@ -14,6 +15,7 @@ interface ContactRowProps {
   showForwardIcon?: boolean;
   subtitle2?: string;
   newMessageCount?: number;
+  rightComponent?: React.ReactNode; // New prop for custom right component
 }
 
 const ContactRow: React.FC<ContactRowProps> = ({
@@ -26,46 +28,78 @@ const ContactRow: React.FC<ContactRowProps> = ({
   showForwardIcon = true,
   subtitle2,
   newMessageCount = 0,
-}) => (
-  <TouchableOpacity style={[styles.row, style]} onPress={onPress} onLongPress={onLongPress}>
-    <View style={styles.avatar}>
-      <Text style={styles.avatarLabel}>
-        {name
-          .trim()
-          .split(' ')
-          .reduce((prev, current) => `${prev}${current[0]}`, '')}
-      </Text>
-    </View>
+  rightComponent,
+}) => {
+  const { colors, isDark } = useTheme();
 
-    <View style={styles.textsContainer}>
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
-    </View>
+  const getAvatarColor = (name: string): string => {
+    const colorPalette = [
+      '#7E57C2',
+      '#EC407A',
+      '#26A69A',
+      '#42A5F5',
+      '#FFA726',
+      '#78909C',
+      '#5C6BC0',
+    ];
+    const sum = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return colorPalette[sum % colorPalette.length];
+  };
 
-    <View style={styles.rightContainer}>
-      <Text style={styles.subtitle2}>{subtitle2}</Text>
+  const avatarColor = getAvatarColor(name);
 
-      {newMessageCount > 0 && (
-        <View style={styles.newMessageBadge}>
-          <Text style={styles.newMessageText}>{newMessageCount}</Text>
-        </View>
-      )}
+  return (
+    <TouchableOpacity
+      style={[
+        styles.row,
+        {
+          backgroundColor: colors.background,
+          borderColor: colors.border,
+        },
+        style,
+      ]}
+      onPress={onPress}
+      onLongPress={onLongPress}
+    >
+      <View style={[styles.avatar, { backgroundColor: avatarColor }]}>
+        <Text style={styles.avatarLabel}>{name.trim().charAt(0).toUpperCase()}</Text>
+      </View>
 
-      {selected && (
-        <View style={styles.overlay}>
-          <Ionicons name="checkmark-outline" size={16} color="white" />
-        </View>
-      )}
+      <View style={styles.textsContainer}>
+        <Text style={[styles.name, { color: colors.text }]}>{name}</Text>
+        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>{subtitle}</Text>
+      </View>
 
-      {showForwardIcon && <Ionicons name="chevron-forward-outline" size={20} />}
-    </View>
-  </TouchableOpacity>
-);
+      <View style={styles.rightContainer}>
+        {rightComponent || (
+          <>
+            <Text style={[styles.subtitle2, { color: colors.textSecondary }]}>{subtitle2}</Text>
+
+            {newMessageCount > 0 && (
+              <View style={styles.newMessageBadge}>
+                <Text style={styles.newMessageText}>{newMessageCount}</Text>
+              </View>
+            )}
+
+            {selected && (
+              <View style={styles.overlay}>
+                <Ionicons name="checkmark-outline" size={16} color="white" />
+              </View>
+            )}
+
+            {showForwardIcon && (
+              <Ionicons name="chevron-forward-outline" size={20} color={colors.textSecondary} />
+            )}
+          </>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   avatar: {
     alignItems: 'center',
-    backgroundColor: colors.primary,
     borderRadius: 28,
     height: 56,
     justifyContent: 'center',
@@ -81,7 +115,7 @@ const styles = StyleSheet.create({
   },
   newMessageBadge: {
     alignItems: 'center',
-    backgroundColor: colors.teal,
+    backgroundColor: constantColors.teal,
     borderRadius: 12,
     justifyContent: 'center',
     marginBottom: 4,
@@ -95,7 +129,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     alignItems: 'center',
-    backgroundColor: colors.teal,
+    backgroundColor: constantColors.teal,
     borderColor: 'black',
     borderRadius: 11,
     borderWidth: 1.5,
@@ -113,19 +147,16 @@ const styles = StyleSheet.create({
   row: {
     alignItems: 'center',
     borderBottomWidth: 0.5,
-    borderColor: '#e0e0e0',
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
   subtitle: {
-    color: '#565656',
     fontSize: 14,
     marginTop: 4,
     maxWidth: 200,
   },
   subtitle2: {
-    color: '#8e8e8e',
     fontSize: 12,
     marginBottom: 4,
   },

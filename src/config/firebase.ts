@@ -8,6 +8,7 @@ import {
   getReactNativePersistence,
   browserSessionPersistence,
 } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 // Firebase config
 const firebaseConfig = {
@@ -32,3 +33,4 @@ const persistence =
 export const auth = initializeAuth(app, { persistence });
 
 export const database = getFirestore();
+export const storage = getStorage(app);

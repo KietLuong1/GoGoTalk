@@ -1,34 +1,25 @@
-import React, { useMemo, useState, useEffect, createContext, ReactNode } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { User as FirebaseUser } from '@firebase/auth';
+// Make sure your AuthenticatedUserContext.tsx looks like this:
+import React, { createContext, useState } from 'react';
+import { User } from 'firebase/auth';
 
-import { auth } from '../config/firebase';
-import { AuthContextType } from '../commonTypes';
+interface AuthenticatedUserContextType {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
 
-export const AuthenticatedUserContext = createContext<AuthContextType>({
+export const AuthenticatedUserContext = createContext<AuthenticatedUserContextType>({
   user: null,
   setUser: () => {},
 });
 
-interface AuthenticatedUserProviderProps {
-  children: ReactNode;
-}
-
-export const AuthenticatedUserProvider: React.FC<AuthenticatedUserProviderProps> = ({
+export const AuthenticatedUserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<FirebaseUser | null>(null);
-
-  useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (authenticatedUser) => {
-      setUser(authenticatedUser || null);
-    });
-    return unsubscribeAuth;
-  }, []);
-
-  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+  const [user, setUser] = useState<User | null>(null);
 
   return (
-    <AuthenticatedUserContext.Provider value={value}>{children}</AuthenticatedUserContext.Provider>
+    <AuthenticatedUserContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthenticatedUserContext.Provider>
   );
 };

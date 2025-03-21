@@ -9,7 +9,7 @@ export default {
     orientation: 'portrait',
     icon: 'src/assets/icon.png',
     userInterfaceStyle: 'light',
-    entryPoint: './src/App.js',
+    entryPoint: './src/App.tsx',
     splash: {
       image: 'src/assets/splash.png',
       resizeMode: 'contain',
@@ -41,6 +41,89 @@ export default {
       eas: {
         projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
       },
+      googleClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+      googleAndroidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+      googleIosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
     },
+    plugins: [
+      [
+        'expo-image-picker',
+        {
+          photosPermission: 'The app needs access to your photos to let you share them in chats.',
+        },
+      ],
+      'expo-auth-session',
+      'expo-crypto',
+    ],
+    fonts: [
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/AntDesign.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Entypo.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/EvilIcons.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/AntDesign.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Feather.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Fontisto.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Foundation.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Octicons.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/SimpleLineIcons.ttf',
+      },
+      {
+        asset:
+          './node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Zocial.ttf',
+      },
+    ],
   },
 };

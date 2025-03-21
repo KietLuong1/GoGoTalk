@@ -1,70 +1,67 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { Text, View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+
+import { colors } from '@config/constants';
 
 interface CellProps {
   title: string;
-  icon: string;
-  iconColor?: string;
+  subtitle?: string;
+  onPress: () => void;
+  icon?: string;
   tintColor?: string;
   style?: StyleProp<ViewStyle>;
-  onPress?: () => void;
-  secondIcon?: string;
-  subtitle?: string;
   showForwardIcon?: boolean;
+  iconColor?: string;
+  textColor?: string;
+  subtitleColor?: string;
 }
 
 const Cell: React.FC<CellProps> = ({
   title,
+  subtitle,
+  onPress,
   icon,
-  iconColor = 'white',
   tintColor,
   style,
-  onPress,
-  secondIcon,
-  subtitle,
   showForwardIcon = true,
-}) => (
-  <TouchableOpacity style={[styles.cell, style]} onPress={onPress}>
-    <View style={[styles.iconContainer, { backgroundColor: tintColor }]}>
-      <Ionicons name={icon as any} size={24} color={iconColor} style={{ marginStart: 4 }} />
-    </View>
+  iconColor = 'black',
+  textColor = 'black',
+  subtitleColor = 'gray',
+}) => {
+  return (
+    <TouchableOpacity
+      style={[
+        {
+          backgroundColor: 'white',
+          borderBottomColor: '#e3e3e3',
+          borderBottomWidth: 0.5,
+          padding: 16,
+        },
+        style,
+      ]}
+      onPress={onPress}
+    >
+      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+        {icon ? (
+          <Ionicons
+            color={tintColor ?? iconColor}
+            name={icon}
+            style={{ marginRight: 16 }}
+            size={24}
+          />
+        ) : null}
+        <View style={{ flex: 1 }}>
+          <Text style={{ color: tintColor ?? textColor, fontSize: 16 }}>{title}</Text>
+          {subtitle ? (
+            <Text style={{ color: subtitleColor, fontSize: 13, marginTop: 5 }}>{subtitle}</Text>
+          ) : null}
+        </View>
 
-    <View style={styles.textsContainer}>
-      <Text style={styles.title}>{title}</Text>
-      {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
-    </View>
-    {showForwardIcon && (
-      <Ionicons name={(secondIcon ?? 'chevron-forward-outline') as any} size={20} />
-    )}
-  </TouchableOpacity>
-);
-
-const styles = StyleSheet.create({
-  cell: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingVertical: 20,
-  },
-  iconContainer: {
-    alignContent: 'center',
-    borderRadius: 6,
-    height: 32,
-    justifyContent: 'center',
-    width: 32,
-  },
-  subtitle: {
-    color: '#565656',
-  },
-  textsContainer: {
-    flex: 1,
-    marginStart: 8,
-  },
-  title: {
-    fontSize: 16,
-  },
-});
+        {showForwardIcon && <Ionicons color="gray" name="chevron-forward-outline" size={18} />}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export default Cell;

@@ -13,9 +13,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { colors } from '../config/constants';
-import ContactRow from '../components/ContactRow';
-import { auth, database } from '../config/firebase';
+import { colors } from '@config/constants';
+import ContactRow from '@components/ContactRow';
+import { auth, database } from '@config/firebase';
+import { User } from 'firebase/auth';
 
 const Group = () => {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ const Group = () => {
     const collectionUserRef = collection(database, 'users');
     const q = query(collectionUserRef, orderBy('name', 'asc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setUsers(snapshot.docs);
+      setUsers(snapshot?.docs);
     });
 
     return () => unsubscribe();
@@ -41,7 +42,7 @@ const Group = () => {
     });
   }, [navigation, selectedItems]);
 
-  const handleName = (user) => {
+  const handleName = (user: User) => {
     if (user.data().name) {
       return user.data().email === auth?.currentUser?.email
         ? `${user.data().name}*(You)`
@@ -50,14 +51,14 @@ const Group = () => {
     return user.data().email ? user.data().email : '~ No Name or Email ~';
   };
 
-  const handleSubtitle = (user) =>
+  const handleSubtitle = (user: User) =>
     user.data().email === auth?.currentUser?.email ? 'Message yourself' : 'User status';
 
-  const handleOnPress = (user) => {
+  const handleOnPress = (user: User) => {
     selectItems(user);
   };
 
-  const selectItems = (user) => {
+  const selectItems = (user: User) => {
     setSelectedItems((prevItems) => {
       if (prevItems.includes(user.id)) {
         return prevItems.filter((item) => item !== user.id);
@@ -66,7 +67,7 @@ const Group = () => {
     });
   };
 
-  const getSelected = (user) => selectedItems.includes(user.id);
+  const getSelected = (user: User) => selectedItems.includes(user.id);
 
   const deSelectItems = () => {
     setSelectedItems([]);
