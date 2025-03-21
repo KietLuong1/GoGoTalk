@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 import { colors } from '../config/constants';
 
-const Separator = () => <View style={styles.separator} />;
+const Separator: React.FC = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
   separator: {

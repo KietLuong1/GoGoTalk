@@ -1,14 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const Button = ({ title, variant }) => (
+interface ButtonProps {
+  title: string;
+  variant?: 'primary' | 'secondary';
+  onPress?: () => void;
+}
+
+const Button: React.FC<ButtonProps> = ({ title, variant = 'primary', onPress }) => (
   <TouchableOpacity
     style={[
       styles.buttonContainer,
       { backgroundColor: variant === 'primary' ? 'black' : 'transparent' },
       { paddingHorizontal: variant === 'primary' ? 18 : 0 },
     ]}
+    onPress={onPress}
   >
     <Text style={[styles.buttonLabel, { color: variant === 'primary' ? 'white' : 'black' }]}>
       {title}
@@ -25,10 +31,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
-
-Button.propTypes = {
-  title: PropTypes.string.isRequired,
-  variant: PropTypes.string,
-};
 
 export default Button;

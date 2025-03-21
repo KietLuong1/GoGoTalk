@@ -1,21 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { colors } from '../config/constants';
 
-const ChatHeader = ({ chatName, chatId }) => {
+interface ChatHeaderProps {
+  chatName: string;
+  chatId: string;
+}
+
+const ChatHeader: React.FC<ChatHeaderProps> = ({ chatName, chatId }) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate('ChatInfo', { chatId, chatName })}
+      onPress={() => navigation.navigate('ChatInfo' as never, { chatId, chatName } as never)}
     >
       <TouchableOpacity
         style={styles.avatar}
-        onPress={() => navigation.navigate('ChatInfo', { chatId, chatName })}
+        onPress={() => navigation.navigate('ChatInfo' as never, { chatId, chatName } as never)}
       >
         <View>
           <Text style={styles.avatarLabel}>
@@ -55,10 +59,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
-
-ChatHeader.propTypes = {
-  chatName: PropTypes.string.isRequired,
-  chatId: PropTypes.string.isRequired,
-};
 
 export default ChatHeader;

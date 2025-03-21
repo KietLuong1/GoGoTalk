@@ -42,7 +42,7 @@ const TabNavigator = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName = route.name === 'Chats' ? 'chatbubbles' : 'settings';
           iconName += focused ? '' : '-outline';
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName as any} size={size} color={color} />;
         },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: 'gray',
@@ -64,7 +64,7 @@ const MainStack = () => (
     <Stack.Screen
       name="Chat"
       component={Chat}
-      options={({ route }) => ({
+      options={({ route }: any) => ({
         headerTitle: () => <ChatHeader chatName={route.params.chatName} chatId={route.params.id} />,
         headerRight: () => (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -115,13 +115,13 @@ const RootNavigator = () => {
 };
 
 const App = () => (
-    <MenuProvider>
-      <AuthenticatedUserProvider>
-        <UnreadMessagesProvider>
-          <RootNavigator />
-        </UnreadMessagesProvider>
-      </AuthenticatedUserProvider>
-    </MenuProvider>
-  );
+  <MenuProvider>
+    <AuthenticatedUserProvider>
+      <UnreadMessagesProvider>
+        <RootNavigator />
+      </UnreadMessagesProvider>
+    </AuthenticatedUserProvider>
+  </MenuProvider>
+);
 
-  export default registerRootComponent(App);
+export default registerRootComponent(App);

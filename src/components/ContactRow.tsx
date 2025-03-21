@@ -1,11 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Ionicons } from '@expo/vector-icons';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 
 import { colors } from '../config/constants';
 
-const ContactRow = ({
+interface ContactRowProps {
+  name: string;
+  subtitle: string;
+  onPress: () => void;
+  style?: StyleProp<ViewStyle>;
+  onLongPress?: () => void;
+  selected?: boolean;
+  showForwardIcon?: boolean;
+  subtitle2?: string;
+  newMessageCount?: number;
+}
+
+const ContactRow: React.FC<ContactRowProps> = ({
   name,
   subtitle,
   onPress,
@@ -14,7 +25,7 @@ const ContactRow = ({
   selected,
   showForwardIcon = true,
   subtitle2,
-  newMessageCount,
+  newMessageCount = 0,
 }) => (
   <TouchableOpacity style={[styles.row, style]} onPress={onPress} onLongPress={onLongPress}>
     <View style={styles.avatar}>
@@ -123,17 +134,5 @@ const styles = StyleSheet.create({
     marginStart: 16,
   },
 });
-
-ContactRow.propTypes = {
-  name: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  onLongPress: PropTypes.func,
-  selected: PropTypes.bool,
-  showForwardIcon: PropTypes.bool,
-  subtitle2: PropTypes.string,
-  newMessageCount: PropTypes.number,
-};
 
 export default ContactRow;

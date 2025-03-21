@@ -11,14 +11,14 @@ import {
 
 // Firebase config
 const firebaseConfig = {
-  apiKey: Constants.expoConfig.extra.apiKey,
-  authDomain: Constants.expoConfig.extra.authDomain,
-  projectId: Constants.expoConfig.extra.projectId,
-  storageBucket: Constants.expoConfig.extra.storageBucket,
-  messagingSenderId: Constants.expoConfig.extra.messagingSenderId,
-  appId: Constants.expoConfig.extra.appId,
-  databaseURL: Constants.expoConfig.extra.databaseURL,
-  measurementId: Constants.expoConfig.extra.measurementId,
+  apiKey: Constants.expoConfig?.extra?.apiKey as string,
+  authDomain: Constants.expoConfig?.extra?.authDomain as string,
+  projectId: Constants.expoConfig?.extra?.projectId as string,
+  storageBucket: Constants.expoConfig?.extra?.storageBucket as string,
+  messagingSenderId: Constants.expoConfig?.extra?.messagingSenderId as string,
+  appId: Constants.expoConfig?.extra?.appId as string,
+  databaseURL: Constants.expoConfig?.extra?.databaseURL as string,
+  measurementId: Constants.expoConfig?.extra?.measurementId as string,
 };
 
 // Initialize Firebase

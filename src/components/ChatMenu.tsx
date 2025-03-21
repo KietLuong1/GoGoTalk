@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +7,12 @@ import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-m
 
 import { auth, database } from '../config/firebase';
 
-const ChatMenu = ({ chatName, chatId }) => {
+interface ChatMenuProps {
+  chatName: string;
+  chatId: string;
+}
+
+const ChatMenu: React.FC<ChatMenuProps> = ({ chatName, chatId }) => {
   const navigation = useNavigation();
 
   const handleDeleteChat = async () => {
@@ -25,7 +29,7 @@ const ChatMenu = ({ chatName, chatId }) => {
             if (chatDoc.exists()) {
               const updatedUsers = chatDoc
                 .data()
-                .users.map((user) =>
+                .users.map((user: { email: string; [key: string]: any }) =>
                   user.email === auth?.currentUser?.email
                     ? { ...user, deletedFromChat: true }
                     : user
@@ -33,7 +37,9 @@ const ChatMenu = ({ chatName, chatId }) => {
 
               await setDoc(chatRef, { users: updatedUsers }, { merge: true });
 
-              const deletedUsers = updatedUsers.filter((user) => user.deletedFromChat).length;
+              const deletedUsers = updatedUsers.filter(
+                (user: { deletedFromChat: boolean }) => user.deletedFromChat
+              ).length;
               if (deletedUsers === updatedUsers.length) {
                 await deleteDoc(chatRef);
               }
@@ -53,7 +59,9 @@ const ChatMenu = ({ chatName, chatId }) => {
         <Ionicons name="ellipsis-vertical" size={25} color="black" style={{ marginRight: 15 }} />
       </MenuTrigger>
       <MenuOptions>
-        <MenuOption onSelect={() => navigation.navigate('ChatInfo', { chatId, chatName })}>
+        <MenuOption
+          onSelect={() => navigation.navigate('ChatInfo' as never, { chatId, chatName } as never)}
+        >
           <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
             <Text style={{ fontWeight: '500' }}>Chat Info</Text>
           </View>
@@ -67,11 +75,6 @@ const ChatMenu = ({ chatName, chatId }) => {
       </MenuOptions>
     </Menu>
   );
-};
-
-ChatMenu.propTypes = {
-  chatName: PropTypes.string.isRequired,
-  chatId: PropTypes.string.isRequired,
 };
 
 export default ChatMenu;
