@@ -3,8 +3,8 @@ import process from 'process';
 
 export default {
   expo: {
-    name: 'react-native-chat',
-    slug: 'react-native-chat',
+    name: 'GoGoTalk',
+    slug: 'go-go-talk',
     version: '1.0.0',
     orientation: 'portrait',
     icon: 'src/assets/icon.png',
@@ -24,7 +24,7 @@ export default {
         foregroundImage: 'src/assets/adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
-      package: 'com.ctere1.reactnativechat',
+      package: 'com.cse443.gogotalk',
     },
     web: {
       favicon: 'src/assets/favicon.png',
